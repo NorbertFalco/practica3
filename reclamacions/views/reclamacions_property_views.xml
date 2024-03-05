@@ -1,0 +1,7 @@
+?xml version="1.0"?>
+<odoo>
+<record id="reclamacions_property_action" model="ir.actions.act_window">
+<field name="name">Reclamació</field>
+<field name="res_model">reclamacions_property</field>
+<field name="view_mode">tree,form</field>
+</record>
