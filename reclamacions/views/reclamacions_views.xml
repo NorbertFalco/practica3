@@ -2,7 +2,7 @@
 <odoo>
     <data>
 
-                <!-- Define the action for reclamacio -->
+        <!-- Define the action for reclamacio -->
         <record id="action_reclamacio" model="ir.actions.act_window">
             <field name="name">Reclamacions</field>
             <field name="type">ir.actions.act_window</field>
