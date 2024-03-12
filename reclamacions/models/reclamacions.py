@@ -15,3 +15,6 @@ class Reclamacions(models.Model):
         ('closed', 'Closed'),
     ], string='Status', default='draft')
 
+
+    def action_open(self):
+        self.status = 'open'

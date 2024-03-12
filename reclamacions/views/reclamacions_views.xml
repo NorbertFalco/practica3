@@ -1,6 +1,16 @@
 <?xml version="1.0"?>
 <odoo>
     <data>
+
+                <!-- Define the action for reclamacio -->
+        <record id="action_reclamacio" model="ir.actions.act_window">
+            <field name="name">Reclamacions</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">reclamacions</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+        </record>
+
         <!-- Define a form view for reclamacio -->
         <record id="view_reclamacions_form" model="ir.ui.view">
             <field name="name">reclamacions.form</field>
@@ -20,14 +30,6 @@
             </field>
         </record>
 
-        <!-- Define the action for reclamacio -->
-        <record id="action_reclamacio" model="ir.actions.act_window">
-            <field name="name">Reclamacions</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="res_model">reclamacions</field>
-            <field name="view_mode">tree,form</field>
-            <field name="domain">[]</field>
-        </record>
     </data>
 </odoo>
 
