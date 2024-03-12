@@ -1,1 +1,1 @@
-from . import reclamacions_property
+from . import reclamacions

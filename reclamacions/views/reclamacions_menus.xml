@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+
+<odoo>
+    <menuitem id="reclamacions_menu_root" name="Reclamacions">
+        <menuitem id="reclamacions_menu_action" action="action_reclamacio"/>
+
+    </menuitem>
+</odoo>
+```

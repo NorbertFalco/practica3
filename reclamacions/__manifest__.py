@@ -5,7 +5,8 @@
     "depends": ["base"],  # dependencies
     "data": [
         'security/ir.model.access.csv',
-        'views/reclamacions_propert_view,xml'
+        'views/reclamacions_views.xml'
+        'views/reclamacions_menu.xml',
     ],
     "installable": True,
     'license': 'LGPL-3',
