@@ -8,6 +8,7 @@
         'views/reclamacions_views.xml',
         'views/reclamacions_menu.xml',
         
+        
     ],
     "installable": True,
     'license': 'LGPL-3',

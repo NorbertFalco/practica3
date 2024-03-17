@@ -38,7 +38,35 @@
             </field>
         </record>
 
-
+<record id="view_reclamacions_form" model="ir.ui.view">
+    <field name="name">reclamacions.form</field>
+    <field name="model">reclamacions</field>
+    <field name="arch" type="xml">
+        <form string="Reclamació">
+            <sheet>
+                <group>
+                    <!-- Campos existentes -->
+                    <field name="title"/>
+                    <field name="description"/>
+                    <!-- ... otros campos ... -->
+                </group>
+                <notebook>
+                    <page string="Missatges">
+                        <!-- Campo One2many que referencia a la vista de lista de mensajes -->
+                        <field name="missatges_ids" context="{'default_reclamacio_id': active_id}">
+                            <tree editable="bottom">
+                                <field name="author_id"/>
+                                <field name="date"/>
+                                <field name="text"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <!-- ... otras páginas ... -->
+                </notebook>
+            </sheet>
+        </form>
+    </field>
+</record>
     
 
     </data>
