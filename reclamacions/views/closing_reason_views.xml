@@ -25,10 +25,10 @@
                     <sheet>
                         <group>
                             <field name="title" string="Título"/>
-                            <field name="description" string="Descripció"/>
-                            <field name="date" string="Data"/>
+                            <field name="ticket_description" string="Descripció"/>
+                            <field name="creation_date" string="Data"/>
                             <field name="user_id" string="Usuari"/>
-                            <field name="status" string="Estat"/>
+                            <field name="state" string="Estat"/>
                         </group>
                         <notebook>
                             <page string="Missatges">
