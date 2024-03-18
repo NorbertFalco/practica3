@@ -2,7 +2,10 @@
 <odoo>
    <menuitem id="reclamacions_menu_root" name="Reclamacions">
     <menuitem id="reclamacions_first_level_menu" name="Reclamacions">
-        <menuitem id="reclamacions_menu_action" action="action_reclamacio"/>
+        <menuitem id="reclamacions_menu_action" action="action_reclamacio"/>   
+    <menuitem id="closing_reason_menu_root" name="Configuración de Reclamaciones" sequence="10">
+        <menuitem id="closing_reason_menu" name="Motivos de Cierre o Cancelación" action="closing_reason_action" sequence="1"/>
+    </menuitem>
     </menuitem>
 </menuitem>
 </odoo>

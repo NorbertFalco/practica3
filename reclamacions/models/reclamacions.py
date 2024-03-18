@@ -4,6 +4,7 @@ from odoo.exceptions import ValidationError, UserError
 class Reclamacions(models.Model):
     _name = 'reclamacions'
     _description = 'Reclamacions'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     
 
     title = fields.Char(string='Títol', required=True)
@@ -19,7 +20,7 @@ class Reclamacions(models.Model):
     missatges_ids = fields.One2many('missatges', 'reclamacio_id', string='Missatges')
     sale_order_id = fields.Many2one('sale.order', string='Comanda de Vendes Associada')
     resolution_description = fields.Text('Descripció de la Resolució Final')
-    closing_reason_id = fields.Many2one('closing.reason', string='Motiu de Tancament o Cancel·lació')
+
     state = fields.Selection([
         ('new', 'Nova'),
         ('in_progress', 'En Tractament'),
@@ -76,6 +77,13 @@ class Reclamacions(models.Model):
             if existing_complaint:
                 raise ValidationError("Ja existeix una reclamació oberta per aquesta comanda.")
         return super(Reclamacions, self).create(vals)
+
+
+    def create(self, vals):
+        existing_open_reclamacio = self.search([('sale_order_id', '=', vals.get('sale_order_id')), ('state', '=', 'open')])
+        if existing_open_reclamacio:
+            raise ValidationError("Ya existe una reclamación abierta para esta comanda.")
+        return super(Reclamacions, self).create(vals)   
 
     def action_open(self):
         self.status = 'open'

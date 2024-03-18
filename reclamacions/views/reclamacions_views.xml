@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <data>
         <!-- Define the action for reclamacio -->
@@ -9,6 +9,28 @@
             <field name="view_mode">tree,form</field>
             <field name="domain">[]</field>
         </record>
+
+        <!-- Define tree view for reclamacions -->
+        <record id="view_reclamacions_tree" model="ir.ui.view">
+            <field name="name">reclamacions.tree</field>
+            <field name="model">reclamacions</field>
+            <field name="arch" type="xml">
+                <tree string="Reclamaciones">
+                    <!-- Suponiendo que 'customer_name' es el campo del cliente que emite la reclamación -->
+                    <field name="user_id" string="Client"/>
+                    <field name="description" string="Descripció"/>
+                    <field name="date" string="Data"/>
+                    <field name="state" string="Estat"/>
+                    <!-- Aquí puedes añadir más campos como necesites -->
+                </tree>
+            </field>
+        </record>
+
+        <record id="closing_reason_action" model="ir.actions.act_window">
+        <field name="name">Motivos de Cierre o Cancelación</field>
+        <field name="res_model">closing.reason</field>
+        <field name="view_mode">tree,form</field>
+    </record>
 
         <!-- Define a form view for reclamacio -->
         <record id="view_reclamacions_form" model="ir.ui.view">
@@ -25,19 +47,19 @@
                     </header>
                     <sheet>
                         <group>
-                            <field name="title"/>
-                            <field name="description"/>
-                            <field name="date"/>
-                            <field name="user_id"/>
-                            <field name="status"/>
+                            <field name="title" string="Título"/>
+                            <field name="description" string="Descripció"/>
+                            <field name="date" string="Data"/>
+                            <field name="user_id" string="Usuari"/>
+                            <field name="status" string="Estat"/>
                         </group>
                         <notebook>
                             <page string="Missatges">
                                 <field name="missatges_ids" context="{'default_reclamacio_id': active_id}">
                                     <tree editable="bottom">
-                                        <field name="author_id"/>
-                                        <field name="date"/>
-                                        <field name="text"/>
+                                        <field name="author_id" string="Autor"/>
+                                        <field name="date" string="Data"/>
+                                        <field name="text" string="Text"/>
                                     </tree>
                                 </field>
                             </page>
