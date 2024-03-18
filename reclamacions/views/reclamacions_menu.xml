@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+
+<odoo>
+    <menuitem id="reclamacions_menu_root" name="Reclamacions"/>
+    
+    <menuitem id="reclamacions_submenu" name="Reclamacions" parent="reclamacions_menu_root"/>
+
+    <menuitem id="reclamacions_menu_action" name="Reclamacions" parent="reclamacions_submenu" action="action_reclamacio"/>
+</odoo>
+
+
