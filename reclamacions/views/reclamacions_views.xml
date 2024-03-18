@@ -18,9 +18,9 @@
                 <tree string="Reclamaciones">
                     <!-- Suponiendo que 'customer_name' es el campo del cliente que emite la reclamación -->
                     <field name="user_id" string="Client"/>
-                    <field name="description" string="Descripció"/>
-                    <field name="date" string="Data"/>
-                    <field name="state" string="Estat"/>
+                    <field name="ticket_description" string="Descripció"/>
+                    <field name="creation_date" string="Data"/>
+                    <field name="status" string="Estat"/>
                     <!-- Aquí puedes añadir más campos como necesites -->
                 </tree>
             </field>
@@ -43,13 +43,13 @@
                         <button string="Tancar" type="object" name="action_close" attrs="{'invisible': [('state', 'in', ['closed', 'cancelled'])]}" class="oe_highlight"/>
                         <button string="Cancelar" type="object" name="action_cancel" attrs="{'invisible': [('state', 'in', ['closed', 'cancelled'])]}" class="oe_highlight"/>
                         <button string="Reobrir" type="object" name="action_reopen" attrs="{'invisible': [('state', '!=', 'closed')]}" class="oe_highlight"/>
-                        <field name="state" widget="statusbar" statusbar_visible="new,in_progress,closed,cancelled"/>
+                        <field name="status" widget="statusbar" statusbar_visible="new,in_progress,closed,cancelled"/>
                     </header>
                     <sheet>
                         <group>
                             <field name="title" string="Título"/>
-                            <field name="description" string="Descripció"/>
-                            <field name="date" string="Data"/>
+                            <field name="ticket_description" string="Descripció"/>
+                            <field name="creation_date" string="Data"/>
                             <field name="user_id" string="Usuari"/>
                             <field name="status" string="Estat"/>
                         </group>
