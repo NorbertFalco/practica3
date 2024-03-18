@@ -6,3 +6,39 @@ class ClosingReason(models.Model):
 
     name = fields.Char('Motiu', required=True)
     description = fields.Text('Descripció')
+    state = fields .Selection([
+        ('new', 'Nuevo'),
+        ('in_progress', 'En progreso'),
+        ('closed', 'Cerrado'),
+        ('cancelled', 'Cancelado')
+    ], default='new', string='Estado')
+    
+
+
+
+    def action_close_ticket(self):
+        # Lógica para cerrar el ticket
+        self.ensure_one()
+        if self.state not in ['closed', 'cancelled']:
+            self.state = 'closed'
+        # ... más lógica si es necesario ...
+
+    def action_cancel_ticket(self):
+        # Lógica para cancelar el ticket
+        self.ensure_one()
+        if self.state != 'cancelled':
+            self.state = 'cancelled'
+        # ... más lógica si es necesario ...
+
+    def action_reopen_ticket(self):
+        # Lógica para reabrir el ticket
+        self.ensure_one()
+        if self.state == 'closed':
+            self.state = 'open'
+        # ... más lógica si es necesario ...
+
+    def action_cancel_sale_order(self):
+        # Lógica para cancelar la orden de venta asociada
+        self.ensure_one()
+        # Aquí tendrás que añadir tu propia lógica para cancelar la orden de venta
+        # posiblemente llamando a un método en el modelo 'sale.order'

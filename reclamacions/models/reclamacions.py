@@ -41,61 +41,64 @@ class Reclamacions(models.Model):
             rec.customer_name = rec.sale_order_id.partner_id.name if rec.sale_order_id else ''
 
 
-    # Métodos para manejar transiciones de estado
+    @api.model
+    def create(self, vals):
+    # Comprueba si hay una reclamación existente con el mismo 'sale_order_id' que no esté cancelada o cerrada
+        existing_complaint = self.search([
+        ('sale_order_id', '=', vals.get('sale_order_id')),
+        ('state', 'not in', ['cancelled', 'closed'])
+    ])
+        if existing_complaint:
+            raise ValidationError("Ja existeix una reclamació oberta per aquesta comanda.")
+
+    # Alternativamente, si quieres asegurarte de que no hay reclamaciones en estado 'open',
+    # puedes agregar esta condición adicional:
+        existing_open_reclamacio = self.search([
+        ('sale_order_id', '=', vals.get('sale_order_id')),
+        ('state', '=', 'open')
+    ])
+        if existing_open_reclamacio:
+            raise ValidationError("Ya existe una reclamación abierta para esta comanda.")
+
+    # Si pasa las validaciones, crea la reclamación
+        return super(Reclamacions, self).create(vals)
+
     def action_open(self):
         self.ensure_one()
         if self.state == 'new':
             self.state = 'in_progress'
+        elif self.state == 'closed':
+            self.state = 'in_progress'
         else:
-            raise UserError("Només es pot obrir una reclamació que està en estat 'nova'.")
+            raise UserError("La reclamación no se puede abrir desde su estado actual.")
 
     def action_close(self):
         self.ensure_one()
         if self.state not in ['closed', 'cancelled']:
             self.state = 'closed'
         else:
-            raise UserError("No es pot tancar una reclamació que està tancada o cancel·lada.")
+            raise UserError("No se puede cerrar una reclamación que está cerrada o cancelada.")
 
     def action_cancel(self):
         self.ensure_one()
         if self.state not in ['closed', 'cancelled']:
             self.state = 'cancelled'
         else:
-            raise UserError("No es pot cancel·lar una reclamació que està tancada o cancel·lada.")
+            raise UserError("No se puede cancelar una reclamación que está cerrada o cancelada.")
 
     def action_reopen(self):
         self.ensure_one()
         if self.state == 'closed':
             self.state = 'in_progress'
         else:
-            raise UserError("Només es pot reobrir una reclamació tancada.")
-
-    @api.model
-    def create(self, vals):
-        if 'sale_order_id' in vals:
-            existing_complaint = self.search([('sale_order_id', '=', vals['sale_order_id']), ('state', '!=', 'cancelled'), ('state', '!=', 'closed')])
-            if existing_complaint:
-                raise ValidationError("Ja existeix una reclamació oberta per aquesta comanda.")
-        return super(Reclamacions, self).create(vals)
-
-
-    def create(self, vals):
-        existing_open_reclamacio = self.search([('sale_order_id', '=', vals.get('sale_order_id')), ('state', '=', 'open')])
-        if existing_open_reclamacio:
-            raise ValidationError("Ya existe una reclamación abierta para esta comanda.")
-        return super(Reclamacions, self).create(vals)   
-
-    def action_open(self):
-        self.status = 'open'
+            raise UserError("Solo se puede reabrir una reclamación cerrada.")
 
     @api.depends('sale_order_id')
     def _compute_invoice_count(self):
         for record in self:
-            invoices = self.env['account.move'].search([('sale_order_id', '=', record.sale_order_id.id), ('move_type', '=', 'out_invoice')])
-            record.invoice_count = len(invoices)
+            record.invoice_count = len(record.sale_order_id.invoice_ids)
 
     @api.depends('sale_order_id')
     def _compute_picking_count(self):
         for record in self:
-            pickings = self.env['stock.picking'].search([('sale_id', '=', record.sale_order_id.id)])
-            record.picking_count = len(pickings)
+            record.picking_count = len(record.sale_order_id.picking_ids)
