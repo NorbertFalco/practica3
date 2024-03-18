@@ -19,11 +19,9 @@
                 <form string="Reclamació">
                     <sheet>
                         <group>
-                            <field name="title"/>
-                            <field name="description"/>
-                            <field name="date"/>
-                            <field name="user_id"/>
-                            <field name="status"/>
+                            # Add fields here
+                            
+
                         </group>
                     </sheet>
                 </form>
