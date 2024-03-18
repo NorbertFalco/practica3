@@ -34,7 +34,6 @@ class Reclamacions(models.Model):
 
     # el nombre d'enviaments associats a la comanda
     delivery_count = fields.Integer(compute='_compute_delivery_count', string='Nombre d\'Enviaments')
-    picking_count = fields.Integer(compute='_compute_picking_count', string='Nombre d\'Enviaments')
 
 
     # l'estat de la reclamació
@@ -118,9 +117,9 @@ class Reclamacions(models.Model):
             record.invoice_count = len(record.sale_order_id.invoice_ids)
 
     @api.depends('sale_order_id')
-    def _compute_picking_count(self):
+    def _compute_delivery_count(self):
         for record in self:
-            record.picking_count = len(record.sale_order_id.picking_ids)
+            record.delivery_count = len(record.sale_order_id.delivery_ids)
 
 
 
