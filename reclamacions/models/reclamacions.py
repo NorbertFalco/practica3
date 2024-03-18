@@ -7,6 +7,7 @@ class Reclamacions(models.Model):
     
 
     title = fields.Char(string='Títol', required=True)
+    customer_name = fields.Char(compute='_compute_customer_name', string='Cliente', store=True)
     description = fields.Text(string='Descripció')
     date = fields.Date(string='Data', default=fields.Date.today())
     user_id = fields.Many2one('res.users', string='Usuari', default=lambda self: self.env.user)
@@ -30,6 +31,13 @@ class Reclamacions(models.Model):
     sale_order_id = fields.Many2one('sale.order', string='Comanda de Vendes')
     resolution = fields.Text(string='Resolució')
     closing_reason_id = fields.Many2one('closing.reason', string='Motiu de Tancament')
+# ... tus campos y métodos existentes ...
+
+
+    @api.depends('sale_order_id')
+    def _compute_customer_name(self):
+        for rec in self:
+            rec.customer_name = rec.sale_order_id.partner_id.name if rec.sale_order_id else ''
 
 
     # Métodos para manejar transiciones de estado

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Acción para Motivos de Cierre -->
+        <record id="action_closing_reason" model="ir.actions.act_window">
+            <field name="name">Motivos de Cierre</field>
+            <field name="res_model">closing.reason</field>
+            <field name="view_mode">tree,form</field>
+            <!-- Define las vistas tree y form para closing.reason aquí -->
+        </record>
+    </data>
+</odoo>
