@@ -29,6 +29,7 @@
                             <field name="creation_date" string="Data"/>
                             <field name="user_id" string="Usuari"/>
                             <field name="state" string="Estat"/>
+                            <field name="motiu_id" string="Motiu"/>
                         </group>
                         <notebook>
                             <page string="Missatges">

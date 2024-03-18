@@ -13,6 +13,7 @@ class Reclamacions(models.Model):
     # el client que fa la reclamació
     client_id = fields.Many2one('res.partner', string='Client', required=True)
     customer_name = fields.Char(compute='_compute_customer_name', string='Cliente', store=True)
+    motiu_id = fields.Many2one('closing.reason', string='Motiu', required=True)
 
     
     # l'usuari que crea, modifica i tanca la reclamació
@@ -34,6 +35,7 @@ class Reclamacions(models.Model):
 
     # el nombre d'enviaments associats a la comanda
     delivery_count = fields.Integer(compute='_compute_delivery_count', string='Nombre d\'Enviaments')
+    picking_count = fields.Integer(compute='_compute_picking_count', string='Nombre d\'Enviaments')
 
 
     # l'estat de la reclamació
@@ -66,11 +68,7 @@ class Reclamacions(models.Model):
         ('sale_order_id', '=', vals.get('sale_order_id')),
         ('state', 'not in', ['cancelled', 'closed'])
     ])
-        if existing_complaint:
-            raise ValidationError("Ja existeix una reclamació oberta per aquesta comanda.")
-
-    # Alternativamente, si quieres asegurarte de que no hay reclamaciones en estado 'open',
-    # puedes agregar esta condición adicional:
+    
         existing_open_reclamacio = self.search([
         ('sale_order_id', '=', vals.get('sale_order_id')),
         ('state', '=', 'open')
@@ -117,9 +115,9 @@ class Reclamacions(models.Model):
             record.invoice_count = len(record.sale_order_id.invoice_ids)
 
     @api.depends('sale_order_id')
-    def _compute_delivery_count(self):
+    def _compute_picking_count(self):
         for record in self:
-            record.delivery_count = len(record.sale_order_id.delivery_ids)
+            record.picking_count = len(record.sale_order_id.picking_ids)
 
 
 
