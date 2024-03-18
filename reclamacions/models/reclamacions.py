@@ -12,6 +12,8 @@ class Reclamacions(models.Model):
     
     # el client que fa la reclamació
     client_id = fields.Many2one('res.partner', string='Client', required=True)
+    customer_name = fields.Char(compute='_compute_customer_name', string='Cliente', store=True)
+
     
     # l'usuari que crea, modifica i tanca la reclamació
     user_id = fields.Many2one('res.users', string='Usuari', default=lambda self: self.env.user)
@@ -29,6 +31,8 @@ class Reclamacions(models.Model):
 
     # el nombre de factures i enviaments associats a la comanda
     invoice_count = fields.Integer(compute='_compute_invoice_count', string='Nombre de Factures')
+
+    # el nombre d'enviaments associats a la comanda
     delivery_count = fields.Integer(compute='_compute_delivery_count', string='Nombre d\'Enviaments')
 
     # el nombre de factures associades a la comanda
@@ -54,7 +58,7 @@ class Reclamacions(models.Model):
     # la resolució de la reclamació
     resolution_description = fields.Text(string='Descripció de la resolució')
 
-# faltarà decidir quins motius de tancament i cancel·lació volem
+    # faltarà decidir quins motius de tancament i cancel·lació volem
     closure_reason = fields.Selection([
         ('reason1', 'Reason 1'),
         ('reason2', 'Reason 2'),
@@ -66,6 +70,9 @@ class Reclamacions(models.Model):
         ('reason2', 'Reason 2'),
         ('reason3', 'Reason 3')
     ], string='Motiu de cancel·lació')
+
+    # els missatges associats a la reclamació
+    missatges_ids = fields.One2many('missatges', 'reclamacio_id', string='Missatges')
     
 
 
