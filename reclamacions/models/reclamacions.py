@@ -27,6 +27,16 @@ class Reclamacions(models.Model):
     # la comanda de venda associada a la reclamació
     sale_order_id = fields.Many2one('sale.order', string='Comanda de venda')
 
+    sale_order_selection = fields.Selection(
+        selection=lambda self: self._get_sale_order_selection(),
+        string='Comanda de venda'
+    )
+
+    @api.model
+    def _get_sale_order_selection(self):
+        sale_orders = self.env['sale.order'].search([])
+        return [(order.id, order.name) for order in sale_orders]
+
     # la descripció de la reclamació
     ticket_description = fields.Text(string='Descripció de la reclamació') 
 
