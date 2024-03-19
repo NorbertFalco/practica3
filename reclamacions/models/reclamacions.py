@@ -135,7 +135,3 @@ class Reclamacions(models.Model):
     def _compute_picking_count(self):
         for record in self:
             record.picking_count = len(record.sale_order_id.picking_ids)
-
-
-
-
