@@ -21,7 +21,15 @@ class ClosingReason(models.Model):
         self.ensure_one()
         if self.state not in ['closed', 'cancelled']:
             self.state = 'closed'
-        # ... más lógica si es necesario ...
+        return {
+                'type': 'ir.actions.act_window',
+                'name': 'Motiu',
+                'res_model': 'motiu',
+                'view_mode': 'form',
+                'view_id': self.env.ref("motiu.view_motiu_form").id,
+                'context': {},
+                'target': 'new',
+            }
 
     def action_cancel_ticket(self):
         # Lógica para cancelar el ticket

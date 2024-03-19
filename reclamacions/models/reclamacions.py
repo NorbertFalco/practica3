@@ -1,5 +1,7 @@
 from odoo import fields, models ,api
 from odoo.exceptions import ValidationError, UserError
+import logging
+_logger = logging.getLogger('reclamacions')
 
 class Reclamacions(models.Model):
     _name = 'reclamacions'
@@ -13,7 +15,7 @@ class Reclamacions(models.Model):
     # el client que fa la reclamació
     client_id = fields.Many2one('res.partner', string='Client', required=True)
     customer_name = fields.Char(compute='_compute_customer_name', string='Cliente', store=True)
-    motiu_id = fields.Many2one('closing.reason', string='Motiu', required=True)
+    
 
     
     # l'usuari que crea, modifica i tanca la reclamació
@@ -89,21 +91,26 @@ class Reclamacions(models.Model):
     # Si pasa las validaciones, crea la reclamación
         return super(Reclamacions, self).create(vals)
 
-    def action_open(self):
-        self.ensure_one()
-        if self.state == 'new':
-            self.state = 'in_progress'
-        elif self.state == 'closed':
-            self.state = 'in_progress'
-        else:
-            raise UserError("La reclamación no se puede abrir desde su estado actual.")
 
     def action_close(self):
-        self.ensure_one()
-        if self.state not in ['closed', 'cancelled']:
-            self.state = 'closed'
-        else:
-            raise UserError("No se puede cerrar una reclamación que está cerrada o cancelada.")
+            # Lógica para cerrar el ticket
+            self.ensure_one()
+            if self.state not in ['closed', 'cancelled']:
+                self.state = 'closed'
+                return {
+                        'type': 'ir.actions.act_window',
+                        'name': 'Motiu',
+                        'res_model': 'motiu',
+                        'view_mode': 'form',
+                        'view_id': self.env.ref("reclamacions.view_motiu_form").id,
+                        'context': {},
+                        'target': 'new',
+                    }
+    
+
+          
+                
+            
 
     def action_cancel(self):
         self.ensure_one()
