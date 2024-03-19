@@ -7,11 +7,11 @@ class ClosingReason(models.Model):
     name = fields.Char('Motiu', required=True)
     description = fields.Text('Descripció')
     state = fields .Selection([
-        ('new', 'Nuevo'),
-        ('in_progress', 'En progreso'),
-        ('closed', 'Cerrado'),
-        ('cancelled', 'Cancelado')
-    ], default='new', string='Estado')
+        ('new', 'Nou'),
+        ('in_progress', 'En progress'),
+        ('closed', 'Tancat'),
+        ('cancelled', 'Cancel·lat')
+    ], default='new', string='Estat', required=True, copy=False, tracking=True)
     
 
 

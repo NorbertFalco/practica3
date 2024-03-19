@@ -50,11 +50,11 @@ class Reclamacions(models.Model):
 
     # l'estat de la reclamació
     state = fields.Selection([
-        ('nova', 'Nova'),
-        ('en_tractament', 'En Tractament'),
-        ('tancada', 'Tancada'),
-        ('cancellada', 'Cancel·lada')
-    ], string='State', default='draft')
+        ('new', 'Nova'),
+        ('in_progress', 'En Tractament'),
+        ('closed', 'Tancada'),
+        ('cancelled', 'Cancel·lada')
+    ], string='State', default='new', required=True, copy=False, tracking=True)
 
     # la resolució de la reclamació
     resolution_description = fields.Text(string='Descripció de la resolució')

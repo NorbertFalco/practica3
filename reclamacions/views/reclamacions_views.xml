@@ -27,7 +27,7 @@
         </record>
 
         <record id="closing_reason_action" model="ir.actions.act_window">
-        <field name="name">Motivos de Cierre o Cancelación</field>
+        <field name="name">Motius de Tancament o Cancel·lació</field>
         <field name="res_model">closing.reason</field>
         <field name="view_mode">tree,form</field>
     </record>
