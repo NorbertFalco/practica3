@@ -23,11 +23,11 @@ class Reclamacions(models.Model):
     
     # la data de creació, modificació i tancament de la reclamació
     creation_date = fields.Date(string='Data de creació', default=fields.Date.today())
-    edit_date = fields.Date(string='Data de modificació', default=fields.Date.today())
-    closing_date = fields.Date(string='Data de tancament', default=fields.Date.today())
+    edit_date = fields.Date(string='Data de modificació')
+    closing_date = fields.Date(string='Data de tancament')
     
     # la comanda de venda associada a la reclamació
-    sale_order_id = fields.Many2one('sale.order', string='Comanda de venda')
+    sale_order_id = fields.Many2one('sale.order', string='Comanda de venda', required=True)
 
     sale_order_selection = fields.Selection(
         selection=lambda self: self._get_sale_order_selection(),
@@ -96,6 +96,7 @@ class Reclamacions(models.Model):
             # Lógica para cerrar el ticket
             self.ensure_one()
             if self.state not in ['closed', 'cancelled']:
+                self.closing_date = fields.Date.today() 
                 self.state = 'closed'
                 return {
                         'type': 'ir.actions.act_window',
@@ -140,9 +141,15 @@ class Reclamacions(models.Model):
         for record in self:
             record.picking_count = len(record.sale_order_id.picking_ids)
 
-
     @api.onchange('missatges_ids')
     def _onchange_missatges_ids(self):
         if any(missatge.reclamacio_id.state == 'new' for missatge in self.missatges_ids):
             self.state = 'in_progress'
+
+    def write(self, vals):
+            if vals:
+                vals['edit_date'] = fields.Date.today()
+            return super(Reclamacions, self).write(vals)
+
+
 
