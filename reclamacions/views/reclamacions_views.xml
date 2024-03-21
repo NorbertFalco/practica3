@@ -42,6 +42,7 @@
                         <button string="Tancar" type="object" name="action_close" attrs="{'invisible': [('state', 'in', ['closed', 'cancelled'])]}" class="oe_highlight"/>
                         <button string="Cancelar" type="object" name="action_cancel" attrs="{'invisible': [('state', 'in', ['closed', 'cancelled'])]}" class="oe_highlight"/>
                         <button string="Reobrir" type="object" name="action_reopen" attrs="{'invisible': [('state', '!=', 'closed')]}" class="oe_highlight"/>
+                        <button string="Tancar comanda de venta" type="object" name="action_cancel_sale_order" attrs="{'invisible': [('state', 'in', ['closed', 'cancelled'])]}" class="oe_highlight"/>
                         <field name="state" widget="statusbar" statusbar_visible="new,in_progress,closed,cancelled"/>
                     </header>
                     <sheet>
@@ -62,6 +63,7 @@
                                     </tree>
                                 </field>
                             </page>
+                        
                         </notebook>
                     </sheet>
                 </form>

@@ -7,8 +7,9 @@
             <field name="res_model">closing.reason</field>
             <field name="view_mode">tree,form</field>
             <!-- Define las vistas tree y form para closing.reason aquí -->
-        </record>
+        </record>   
 
+                        
 <!-- Define a form view for reclamacio -->
         <record id="view_reclamacions_form" model="ir.ui.view">
             <field name="name">reclamacions.form</field>
@@ -19,8 +20,10 @@
                         <button string="Tancar" type="object" name="action_close" attrs="{'invisible': [('state', 'in', ['closed', 'cancelled'])]}" class="oe_highlight"/>
                         <button string="Cancelar" type="object" name="action_cancel" attrs="{'invisible': [('state', 'in', ['closed', 'cancelled'])]}" class="oe_highlight"/>
                         <button string="Reobrir" type="object" name="action_reopen" attrs="{'invisible': [('state', '!=', 'closed')]}" class="oe_highlight"/>
+                        <button string="Tancar comanda de venta" type="object" name="action_cancel_sale_order" attrs="{'invisible': [('state', 'in', ['closed', 'cancelled'])]}" class="oe_highlight"/>
                         <field name="state" widget="statusbar" statusbar_visible="new,in_progress,closed,cancelled"/>
                     </header>
+                
                     <sheet>
                         <group>
                             <field name="title" string="Título"/>
@@ -29,6 +32,7 @@
                             <field name="user_id" string="Usuari"/>
                             <field name="state" string="Estat" readonly="1"/>
                             <field name="sale_order_id"/>
+                            <field name="motiu_name" string="Motiu"/>
                         </group>
                         <notebook>
                             <page string="Missatges">
@@ -44,7 +48,10 @@
                     </sheet>
                 </form>
             </field>
+     
         </record>
+      
+           
 
         <record id="view_closing_reason_form" model="ir.ui.view">
     <field name="name">closing.reason.form</field>

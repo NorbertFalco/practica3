@@ -34,10 +34,25 @@ class Reclamacions(models.Model):
         string='Comanda de venda'
     )
 
+
     @api.model
     def _get_sale_order_selection(self):
         sale_orders = self.env['sale.order'].search([])
         return [(order.id, order.name) for order in sale_orders]
+
+
+    @api.constrains('sale_order_id', 'state')
+    def _check_unique_reclamacio(self):
+        for reclamacio in self:
+            existing_open_reclamacions = self.search([
+                ('sale_order_id', '=', reclamacio.sale_order_id.id),
+                ('state', 'in', ['new', 'in_progress']),
+                ('id', '!=', reclamacio.id)
+            ])
+            if existing_open_reclamacions:
+                raise ValidationError("Ja existeix una reclamació oberta per a aquesta comanda.")
+
+
 
     # la descripció de la reclamació
     ticket_description = fields.Text(string='Descripció de la reclamació') 
@@ -64,6 +79,11 @@ class Reclamacions(models.Model):
 
     # els missatges associats a la reclamació
     missatges_ids = fields.One2many('missatges', 'reclamacio_id', string='Missatges')
+
+    motiu_id = fields.Many2one('motiu', string='Motiu de Tancament', readonly=True)
+    motiu_name = fields.Char(string='Motiu de Tancament', readonly=True)
+
+
     
 
 
@@ -73,55 +93,61 @@ class Reclamacions(models.Model):
             rec.customer_name = rec.sale_order_id.partner_id.name if rec.sale_order_id else ''
 
 
-    @api.model
-    def create(self, vals):
-    # Comprueba si hay una reclamación existente con el mismo 'sale_order_id' que no esté cancelada o cerrada
-        existing_complaint = self.search([
-        ('sale_order_id', '=', vals.get('sale_order_id')),
-        ('state', 'not in', ['cancelled', 'closed'])
-    ])
     
-        existing_open_reclamacio = self.search([
-        ('sale_order_id', '=', vals.get('sale_order_id')),
-        ('state', '=', 'open')
-    ])
-        if existing_open_reclamacio:
-            raise ValidationError("Ya existe una reclamación abierta para esta comanda.")
-
-    # Si pasa las validaciones, crea la reclamación
-        return super(Reclamacions, self).create(vals)
-
 
     def action_close(self):
-            # Lógica para cerrar el ticket
-            self.ensure_one()
-            if self.state not in ['closed', 'cancelled']:
-                self.state = 'closed'
-                return {
-                        'type': 'ir.actions.act_window',
-                        'name': 'Motiu',
-                        'res_model': 'motiu',
-                        'view_mode': 'form',
-                        'view_id': self.env.ref("reclamacions.view_motiu_form").id,
-                        'context': {},
-                        'target': 'new',
-                    }
-             
-            
+        self.ensure_one()
+        if self.state not in ['closed', 'cancelled']:
+            self.state = 'closed'
+            # Devuelve una acción para abrir la vista del motivo de cierre
+            return {
+                'type': 'ir.actions.act_window',
+                'name': 'Seleccionar Motiu',
+                'res_model': 'motiu',
+                'view_mode': 'form',
+                'view_id': self.env.ref("reclamacions.view_motiu_form").id,
+                'context': {'default_reclamacio_id': self.id},  # Pasar el ID de la reclamación
+                'target': 'new',
+        }
 
     def action_cancel(self):
         self.ensure_one()
         if self.state not in ['closed', 'cancelled']:
             self.state = 'cancelled'
+            # Devuelve una acción para abrir la vista del motivo de cancelación
             return {
-                        'type': 'ir.actions.act_window',
-                        'name': 'Motiu',
-                        'res_model': 'motiu',
-                        'view_mode': 'form',
-                        'view_id': self.env.ref("reclamacions.view_motiu_form").id,
-                        'context': {},
-                        'target': 'new',
-                    }
+                'type': 'ir.actions.act_window',
+                'name': 'Motiu',
+                'res_model': 'motiu',
+                'view_mode': 'form',
+                'view_id': self.env.ref("reclamacions.view_motiu_form").id,
+                'context': {'default_reclamacio_id': self.id},  # Pasar el ID de la reclamación
+                'target': 'new',
+            }
+
+
+    def action_cancel_sale_order(self):
+        if self.sale_order_id:
+            try:
+                self.sale_order_id._action_cancel()
+            except UserError as e:
+                raise UserError("Error al cancelar la venta: %s" % str(e))
+            
+            # Después de cancelar la orden de venta, retorna la acción para poner el motivo
+            return {
+                'type': 'ir.actions.act_window',
+                'name': 'Motiu',
+                'res_model': 'motiu',
+                'view_mode': 'form',
+                'view_id': self.env.ref("reclamacions.view_motiu_form").id,
+                'context': {'default_reclamacio_id': self.id},  # Pasar el ID de la reclamación
+                'target': 'new',
+            }
+        else:
+            raise UserError("La reclamació no està associada a cap comanda de venta.")
+
+        
+
 
     def action_reopen(self):
         self.ensure_one()
