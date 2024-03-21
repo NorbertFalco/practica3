@@ -106,18 +106,22 @@ class Reclamacions(models.Model):
                         'context': {},
                         'target': 'new',
                     }
-    
-
-          
-                
+             
             
 
     def action_cancel(self):
         self.ensure_one()
         if self.state not in ['closed', 'cancelled']:
             self.state = 'cancelled'
-        else:
-            raise UserError("No se puede cancelar una reclamación que está cerrada o cancelada.")
+            return {
+                        'type': 'ir.actions.act_window',
+                        'name': 'Motiu',
+                        'res_model': 'motiu',
+                        'view_mode': 'form',
+                        'view_id': self.env.ref("reclamacions.view_motiu_form").id,
+                        'context': {},
+                        'target': 'new',
+                    }
 
     def action_reopen(self):
         self.ensure_one()
