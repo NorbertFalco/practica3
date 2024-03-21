@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_motiu_form" model="ir.ui.view">
+            <field name="name">motiu.form</field>
+            <field name="model">motiu</field>
+            <field name="arch" type="xml">
+                <form string="Motiu de tancament">
+                    <sheet>
+                        <group>
+                            <field name="motiu_id"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

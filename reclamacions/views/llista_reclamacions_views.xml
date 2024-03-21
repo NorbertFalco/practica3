@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Acció per a la llista de reclamacions -->
+        <record id="action_reclamacio" model="ir.actions.act_window">
+            <field name="name">Reclamacions</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">reclamacions</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+        </record>
+
+        <!-- Llista(tree view) per a reclamacions -->
+        <record id="view_reclamacions_tree" model="ir.ui.view">
+            <field name="name">reclamacions.tree</field>
+            <field name="model">reclamacions</field>
+            <field name="arch" type="xml">
+                <tree string="Reclamaciones">
+                    <field name="title" string="Títol"/>
+                    <field name="sale_order_id" string="Comanda de venda"/>
+                    <field name="customer_name" string="Client"/>
+                    <field name="user_id" string="Usuari"/>
+                    <field name="ticket_description" string="Descripció"/>
+                    <field name="creation_date" string="Data de creació"/>
+                    <field name="state" string="Estat"/>
+                </tree>
+            </field>
+        </record>
+    </data>
+</odoo>

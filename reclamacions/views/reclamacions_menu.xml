@@ -1,11 +1,13 @@
-<?xml version="1.0"?>
-
+<?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <menuitem id="reclamacions_menu_root" name="Reclamacions"/>
-    
-    <menuitem id="reclamacions_submenu" name="Reclamacions" parent="reclamacions_menu_root"/>
-
-    <menuitem id="reclamacions_menu_action" name="Reclamacions" parent="reclamacions_submenu" action="action_reclamacio"/>
+    <data>
+        <menuitem id="reclamacions_menu_root" name="Reclamacions">
+            <menuitem id="reclamacions_first_level_menu" name="Reclamacions">
+                <menuitem id="reclamacions_menu_action" action="action_reclamacio" name="Reclamacions" sequence="1"/>  
+            </menuitem>
+            <menuitem id="closing_reason_menu_root" name="Configuración de Reclamaciones" sequence="10">
+                <menuitem id="closing_reason_menu" name="Motius de Tancament" action="action_closing_reason" sequence="1"/>
+            </menuitem>
+        </menuitem>
+    </data>
 </odoo>
-
-
