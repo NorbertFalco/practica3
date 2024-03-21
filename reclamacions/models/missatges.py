@@ -27,5 +27,3 @@ class Missatges(models.Model):
 
     def unlink(self):
         raise ValidationError("No es poden esborrar els missatges.")
-
-

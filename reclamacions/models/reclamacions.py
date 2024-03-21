@@ -13,7 +13,7 @@ class Reclamacions(models.Model):
     title = fields.Char(string='Title', required=True)
     
     # el client que fa la reclamació
-    client_id = fields.Many2one('res.partner', string='Client', required=True)
+    # client_id = fields.Many2one('res.partner', string='Client', required=True)
     customer_name = fields.Char(compute='_compute_customer_name', string='Cliente', store=True)
     
 
@@ -135,3 +135,10 @@ class Reclamacions(models.Model):
     def _compute_picking_count(self):
         for record in self:
             record.picking_count = len(record.sale_order_id.picking_ids)
+
+
+    @api.onchange('missatges_ids')
+    def _onchange_missatges_ids(self):
+        if any(missatge.reclamacio_id.state == 'new' for missatge in self.missatges_ids):
+            self.state = 'in_progress'
+

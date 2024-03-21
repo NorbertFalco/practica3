@@ -1,4 +1,3 @@
-
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <data>
@@ -28,7 +27,7 @@
         </record>
 
         <record id="closing_reason_action" model="ir.actions.act_window">
-        <field name="name">Motius de Tancament o Cancel·lació</field>
+        <field name="name">Motivos de Cierre o Cancelación</field>
         <field name="res_model">closing.reason</field>
         <field name="view_mode">tree,form</field>
     </record>
@@ -40,7 +39,6 @@
             <field name="arch" type="xml">
                 <form string="Reclamació">
                     <header>
-                        <button string="Obrir" type="object" name="action_open" attrs="{'invisible': [('state', '!=', 'new')]}" class="oe_highlight"/>
                         <button string="Tancar" type="object" name="action_close" attrs="{'invisible': [('state', 'in', ['closed', 'cancelled'])]}" class="oe_highlight"/>
                         <button string="Cancelar" type="object" name="action_cancel" attrs="{'invisible': [('state', 'in', ['closed', 'cancelled'])]}" class="oe_highlight"/>
                         <button string="Reobrir" type="object" name="action_reopen" attrs="{'invisible': [('state', '!=', 'closed')]}" class="oe_highlight"/>
@@ -71,5 +69,3 @@
         </record>
     </data>
 </odoo>
-
-

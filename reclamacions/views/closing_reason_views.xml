@@ -16,7 +16,6 @@
             <field name="arch" type="xml">
                 <form string="Reclamació">
                     <header>
-                        <button string="Obrir" type="object" name="action_open" attrs="{'invisible': [('state', '!=', 'new')]}" class="oe_highlight"/>
                         <button string="Tancar" type="object" name="action_close" attrs="{'invisible': [('state', 'in', ['closed', 'cancelled'])]}" class="oe_highlight"/>
                         <button string="Cancelar" type="object" name="action_cancel" attrs="{'invisible': [('state', 'in', ['closed', 'cancelled'])]}" class="oe_highlight"/>
                         <button string="Reobrir" type="object" name="action_reopen" attrs="{'invisible': [('state', '!=', 'closed')]}" class="oe_highlight"/>
@@ -28,7 +27,7 @@
                             <field name="ticket_description" string="Descripció"/>
                             <field name="creation_date" string="Data"/>
                             <field name="user_id" string="Usuari"/>
-                            <field name="state" string="Estat"/>
+                            <field name="state" string="Estat" readonly="1"/>
                             <field name="sale_order_id"/>
                         </group>
                         <notebook>
