@@ -25,14 +25,20 @@
                     </header>
                     <sheet>
                         <group>
-                            <field name="title" string="Títol"/>
-                            <field name="state" string="Estat" readonly="1"/>
-                            <field name="creation_date" string="Data de creació" readonly="1"/>
-                            <field name="edit_date" string="Data de modificació" readonly="1"/>
-                            <field name="closing_date" string="Data de tancament" readonly="1"/>
-                            <field name="user_id" string="Usuari"/>
-                            <field name="sale_order_id" string="Comanda de venda"/>
-                            <field name="motiu_name" string="Motiu de tancament"/>
+                            <group style="background-color: #EAECEE; padding: 4px; margin-left:12px; width: 65%;">
+                                <field name="title" string="Títol" style="color: #7D3C98"/>
+                            </group>
+                            <group style="padding-top: 4px; margin-top:20px">
+                                <field name="state" string="Estat" readonly="1"/>
+                                <field name="creation_date" string="Data de creació" readonly="1"/>
+                                <field name="edit_date" string="Data de modificació" readonly="1"/>
+                                <field name="closing_date" string="Data de tancament" readonly="1"/>
+                            </group>
+                            <group style="padding-top: 4px; margin-top:20px">
+                                <field name="user_id" string="Usuari"/>
+                                <field name="sale_order_id" string="Comanda de venda"/>
+                                <field name="motiu_name" string="Motiu de tancament"/>
+                            </group>
                         </group>
                         <notebook>
                             <page string="Missatges">
