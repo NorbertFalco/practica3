@@ -137,11 +137,8 @@ class Reclamacions(models.Model):
         if self.sale_order_id:
             try:
                 self.sale_order_id._action_cancel()
-            except UserError as e:
-                raise UserError("Error al cancelar la venta: %s" % str(e))
-            
-            # Después de cancelar la orden de venta, retorna la acción para poner el motivo
-            return {
+                self.action_cancel()
+                return {
                 'type': 'ir.actions.act_window',
                 'name': 'Motiu',
                 'res_model': 'motiu',
@@ -150,8 +147,11 @@ class Reclamacions(models.Model):
                 'context': {'default_reclamacio_id': self.id},  # Pasar el ID de la reclamación
                 'target': 'new',
             }
+            except UserError as e:
+                raise UserError("Error al cancelar la venta: %s" % str(e))
         else:
             raise UserError("La reclamació no està associada a cap comanda de venta.")
+
 
 
     def action_reopen(self):

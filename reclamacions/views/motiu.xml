@@ -10,8 +10,10 @@
                         <group>
                             <field name="motiu_closing_reason"/>
                         </group>
-                        <button string="Tancar" type="object" name="confirm_motiu" class="oe_highlight"/>
                     </sheet>
+                    <footer>
+                        <button string="Tancar" type="object" name="confirm_motiu" class="oe_highlight"/>
+                    </footer>
                 </form>
             </field>
         </record>
