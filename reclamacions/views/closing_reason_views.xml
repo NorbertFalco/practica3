@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Acció per a Motius de Tancament -->
+        <record id="action_closing_reason" model="ir.actions.act_window">
+            <field name="name">Motius de Tancament</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">closing.reason</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+        </record>
+
+        <!-- Tree View per a Motius de Tancament -->
+        <record id="view_closing_reason_tree" model="ir.ui.view">
+            <field name="name">closing.reason.tree</field>
+            <field name="model">closing.reason</field>
+            <field name="arch" type="xml">
+                <tree string="Motius de Tancament">
+                    <field name="name" string="Reason"/>
+                    <field name="description" string="Description"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Form View per a Motius de Tancament -->
+        <record id="view_closing_reason_form" model="ir.ui.view">
+            <field name="name">closing.reason.form</field>
+            <field name="model">closing.reason</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name" readonly="1"/>
+                            <field name="description"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

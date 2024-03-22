@@ -6,15 +6,6 @@ class ClosingReason(models.Model):
 
     name = fields.Char('Motiu', required=True)
     description = fields.Text('Descripció')
-    state = fields .Selection([
-        ('new', 'Nou'),
-        ('in_progress', 'En progress'),
-        ('closed', 'Tancat'),
-        ('cancelled', 'Cancel·lat')
-    ], default='new', string='Estat', required=True, copy=False, tracking=True)
-    
-
-
 
     def action_reopen_ticket(self):
         # Lógica para reabrir el ticket
@@ -22,4 +13,3 @@ class ClosingReason(models.Model):
         if self.state == 'closed':
             self.state = 'open'
         # ... más lógica si es necesario ...
-        

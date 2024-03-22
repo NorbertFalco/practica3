@@ -16,8 +16,6 @@ class Reclamacions(models.Model):
     # client_id = fields.Many2one('res.partner', string='Client', required=True)
     customer_name = fields.Char(compute='_compute_customer_name', string='Cliente', store=True)
     
-
-    
     # l'usuari que crea, modifica i tanca la reclamació
     user_id = fields.Many2one('res.users', string='Usuari', default=lambda self: self.env.user)
     
@@ -53,7 +51,6 @@ class Reclamacions(models.Model):
                 raise ValidationError("Ja existeix una reclamació oberta per a aquesta comanda.")
 
 
-
     # la descripció de la reclamació
     ticket_description = fields.Text(string='Descripció de la reclamació') 
 
@@ -76,7 +73,6 @@ class Reclamacions(models.Model):
     # la resolució de la reclamació
     resolution_description = fields.Text(string='Descripció de la resolució')
 
-
     # els missatges associats a la reclamació
     missatges_ids = fields.One2many('missatges', 'reclamacio_id', string='Missatges')
 
@@ -94,6 +90,7 @@ class Reclamacions(models.Model):
     def action_close(self):
         self.ensure_one()
         if self.state not in ['closed', 'cancelled']:
+            self.closing_date = fields.Date.today() 
             self.state = 'closed'
             # Devuelve una acción para abrir la vista del motivo de cierre
             return {
@@ -110,16 +107,30 @@ class Reclamacions(models.Model):
         self.ensure_one()
         if self.state not in ['closed', 'cancelled']:
             self.state = 'cancelled'
-            # Devuelve una acción para abrir la vista del motivo de cancelación
             return {
-                'type': 'ir.actions.act_window',
-                'name': 'Motiu',
-                'res_model': 'motiu',
-                'view_mode': 'form',
-                'view_id': self.env.ref("reclamacions.view_motiu_form").id,
-                'context': {'default_reclamacio_id': self.id},  # Pasar el ID de la reclamación
-                'target': 'new',
-            }
+                        'type': 'ir.actions.act_window',
+                        'name': 'Motiu',
+                        'res_model': 'motiu',
+                        'view_mode': 'form',
+                        'view_id': self.env.ref("reclamacions.view_motiu_form").id,
+                        'context': {'default_reclamacio_id': self.id},
+                        'target': 'new',
+                    }
+
+
+    @api.model
+    def create(self, vals):
+    # Comprueba si hay una reclamación existente con el mismo 'sale_order_id' que no esté cancelada o cerrada    
+        existing_open_reclamacio = self.search([
+        ('sale_order_id', '=', vals.get('sale_order_id')),
+        ('state', '=', 'open')
+    ])
+        if existing_open_reclamacio:
+            raise ValidationError("Ya existe una reclamación abierta para esta comanda.")
+
+    # Si pasa las validaciones, crea la reclamación
+        return super(Reclamacions, self).create(vals)
+
 
 
     def action_cancel_sale_order(self):
@@ -169,6 +180,7 @@ class Reclamacions(models.Model):
             if vals:
                 vals['edit_date'] = fields.Date.today()
             return super(Reclamacions, self).write(vals)
+
 
 
 
