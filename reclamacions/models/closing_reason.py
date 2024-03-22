@@ -23,11 +23,3 @@ class ClosingReason(models.Model):
             self.state = 'open'
         # ... más lógica si es necesario ...
         
-
-    @api.onchange('name')
-    def onchange_name(self):
-        if self.motiu_ids:
-            for motiu in self.motiu_ids:
-                motiu.motiu_closing_reason = self.id    
-
-   

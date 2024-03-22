@@ -23,11 +23,11 @@ class Reclamacions(models.Model):
     
     # la data de creació, modificació i tancament de la reclamació
     creation_date = fields.Date(string='Data de creació', default=fields.Date.today())
-    edit_date = fields.Date(string='Data de modificació', default=fields.Date.today())
-    closing_date = fields.Date(string='Data de tancament', default=fields.Date.today())
+    edit_date = fields.Date(string='Data de modificació')
+    closing_date = fields.Date(string='Data de tancament')
     
     # la comanda de venda associada a la reclamació
-    sale_order_id = fields.Many2one('sale.order', string='Comanda de venda')
+    sale_order_id = fields.Many2one('sale.order', string='Comanda de venda', required=True)
 
     sale_order_selection = fields.Selection(
         selection=lambda self: self._get_sale_order_selection(),
@@ -84,16 +84,12 @@ class Reclamacions(models.Model):
     motiu_name = fields.Char(string='Motiu de Tancament', readonly=True)
 
 
-    
-
 
     @api.depends('sale_order_id')
     def _compute_customer_name(self):
         for rec in self:
             rec.customer_name = rec.sale_order_id.partner_id.name if rec.sale_order_id else ''
 
-
-    
 
     def action_close(self):
         self.ensure_one()
@@ -146,8 +142,6 @@ class Reclamacions(models.Model):
         else:
             raise UserError("La reclamació no està associada a cap comanda de venta.")
 
-        
-
 
     def action_reopen(self):
         self.ensure_one()
@@ -166,9 +160,15 @@ class Reclamacions(models.Model):
         for record in self:
             record.picking_count = len(record.sale_order_id.picking_ids)
 
-
     @api.onchange('missatges_ids')
     def _onchange_missatges_ids(self):
         if any(missatge.reclamacio_id.state == 'new' for missatge in self.missatges_ids):
             self.state = 'in_progress'
+
+    def write(self, vals):
+            if vals:
+                vals['edit_date'] = fields.Date.today()
+            return super(Reclamacions, self).write(vals)
+
+
 
