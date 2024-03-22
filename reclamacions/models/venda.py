@@ -6,5 +6,5 @@ _logger = logging.getLogger('reclamacions')
 class venda(models.Model):
     _inherit = 'sale.order'
 
-    gat = fields.Boolean(string='Gat', default=False)
+
     reclamacions_ids = fields.One2many('reclamacions', 'sale_order_id', string='Reclamaciones')
