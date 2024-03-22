@@ -10,6 +10,7 @@
         'views/formulari_reclamacions.xml',
         'views/motiu.xml',
         'views/closing_reason_views.xml',
+        'views/venda_views.xml',
     ],
     "installable": True,
     'license': 'LGPL-3',

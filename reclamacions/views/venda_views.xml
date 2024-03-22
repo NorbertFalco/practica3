@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Heredar la vista del formulario de la orden de venta para agregar el campo 'gat' -->
+        <record id="view_order_form_inherit_gat" model="ir.ui.view">
+            <field name="name">sale.order.form.inherit.gat</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/> <!-- Referencia a la vista original que quieres extender -->
+            <field name="arch" type="xml">
+                <!-- Usar XPath para encontrar la ubicación donde quieras insertar el campo 'gat' -->
+                <!-- Este ejemplo añade el campo 'gat' al final del formulario, pero puedes ajustar el XPath según necesites -->
+                <xpath expr="//notebook" position="inside">
+                    <page string="Reclamacions">
+                        <field name="reclamacions_ids"/>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
