@@ -8,3 +8,6 @@ class venda(models.Model):
 
 
     reclamacions_ids = fields.One2many('reclamacions', 'sale_order_id', string='Reclamaciones')
+
+
+    

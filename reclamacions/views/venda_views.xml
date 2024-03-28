@@ -8,7 +8,7 @@
             <field name="inherit_id" ref="sale.view_order_form"/> <!-- Referencia a la vista original que quieres extender -->
             <field name="arch" type="xml">
                 <!-- Usar XPath para encontrar la ubicación donde quieras insertar el campo 'gat' -->
-                <!-- Este ejemplo añade el campo 'gat' al final del formulario, pero puedes ajustar el XPath según necesites -->
+                <!-- Este ejemplo añade el campo 'reclamacions' al final del formulario, pero puedes ajustar el XPath según necesites -->
                 <xpath expr="//notebook" position="inside">
                     <page string="Reclamacions">
                         <field name="reclamacions_ids"/>

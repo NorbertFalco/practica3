@@ -3,3 +3,6 @@ access_reclamacions,access_reclamacions,model_reclamacions,base.group_user,1,1,1
 access_missatges,access_missatges,model_missatges,base.group_user,1,1,1,0
 access_closing_reason,access_closing_reason,model_closing_reason,base.group_user,1,1,1,1
 access_motiu,access_motiu,model_motiu,base.group_user,1,1,1,1
+access_sale_order,access_sale_order,model_sale_order,base.group_user,1,1,1,1
+
+

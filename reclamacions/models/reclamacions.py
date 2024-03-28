@@ -99,7 +99,9 @@ class Reclamacions(models.Model):
                 'res_model': 'motiu',
                 'view_mode': 'form',
                 'view_id': self.env.ref("reclamacions.view_motiu_form").id,
-                'context': {'default_reclamacio_id': self.id},  # Pasar el ID de la reclamación
+                'context': {
+                                'default_reclamacio_id': self.id,
+                            },                
                 'target': 'new',
         }
 
