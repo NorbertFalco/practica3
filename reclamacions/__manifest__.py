@@ -12,6 +12,7 @@
         'views/closing_reason_views.xml',
         'views/venda_views.xml',
         'views/email_template_order_cancellation.xml'
+        
     ],
     "installable": True,
     'license': 'LGPL-3',

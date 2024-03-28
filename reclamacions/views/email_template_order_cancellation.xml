@@ -13,7 +13,7 @@
                 <![CDATA[
                 <p>Hola ${object.partner_id.name},</p>
                 <p>Lamentamos informarle que su orden de venta <strong>${object.name}</strong> ha sido cancelada.</p>
-                <p>Aquí puedes incluir más detalles o pasos a seguir tras la cancelación.</p>
+                <p>Aquí puedes incluira más detalles o pasos a seguir tras la cancelación.</p>
                 <p>Si tiene alguna pregunta o necesita asistencia, no dude en contactarnos a <a href="mailto:${(object.user_id.email or object.company_id.email)|safe}">${(object.user_id.email or object.company_id.email)|safe}</a>.</p>
                 <p>Gracias por su comprensión.</p>
                 ]]>
