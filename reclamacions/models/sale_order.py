@@ -1,9 +1,12 @@
-from odoo import models, _
+from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
+    # Aquí irían otros métodos CRUD sobrescritos o añadidos como _add_precomputed_values, create, etc.
+
+    # Aquí se incluye tu método action_cancel personalizado
     def action_cancel(self):
         # Comprobar si hay facturas publicadas asociadas a la orden
         published_invoices = self.invoice_ids.filtered(lambda inv: inv.state == 'posted')
@@ -24,9 +27,14 @@ class SaleOrder(models.Model):
         pickings_to_cancel.action_cancel()
 
         # Enviar correo al cliente sobre la cancelación
-        template = self.env.ref('views.email_template_order_cancellation')
+        template = self.env.ref('reclamacions.email_template_order_cancellation')
+
         for order in self:
             template.send_mail(order.id, force_send=True)
             order.message_post(body=_("Correo de cancelación enviado al cliente."))
 
         return res
+
+    # Aquí seguirían otros métodos de negocio sobrescritos o añadidos como _expected_date, compute_uom_qty, etc.
+
+    # No olvides revisar la referencia a tu plantilla de correo electrónico para que coincida con el ID externo correcto.
