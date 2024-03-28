@@ -12,10 +12,10 @@
             <field name="body_html">
                 <![CDATA[
                 <p>Hola ${object.partner_id.name},</p>
-                <p>Lamentamos informarle que su orden de venta <strong>${object.name}</strong> ha sido cancelada.</p>
-                <p>Aquí puedes incluira más detalles o pasos a seguir tras la cancelación.</p>
-                <p>Si tiene alguna pregunta o necesita asistencia, no dude en contactarnos a <a href="mailto:${(object.user_id.email or object.company_id.email)|safe}">${(object.user_id.email or object.company_id.email)|safe}</a>.</p>
-                <p>Gracias por su comprensión.</p>
+                <p>Lamentem informar-vos que el vostre ordre de venda <strong>${object.name}</strong> ha estat cancel·lada.</p>
+                <p>Aquí pots incloure més detalls o passos a seguir després de la cancel·lació.</p>
+                <p>Si teniu alguna pregunta o necessiteu assistència, no dubteu a contactar-nos a <a href="mailto:${(object.user_id.email or object.company_id.email)|safe}">${(object.user_id.email or object.company_id.email)|safe}</a>.</p>
+                <p>Gràcies per la vostra comprensió.</p>
                 ]]>
             </field>
         </record>

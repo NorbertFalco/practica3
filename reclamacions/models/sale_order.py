@@ -11,7 +11,7 @@ class SaleOrder(models.Model):
         # Comprobar si hay facturas publicadas asociadas a la orden
         published_invoices = self.invoice_ids.filtered(lambda inv: inv.state == 'posted')
         if published_invoices:
-            raise UserError(_('No se puede cancelar la orden porque existen facturas publicadas asociadas.'))
+            raise UserError(_('No es pot cancel·lar lordre perquè hi ha factures publicades associades.'))
 
         # Asegurarse de ejecutar la lógica original de cancelación
         res = super(SaleOrder, self).action_cancel()
@@ -31,7 +31,7 @@ class SaleOrder(models.Model):
 
         for order in self:
             template.send_mail(order.id, force_send=True)
-            order.message_post(body=_("Correo de cancelación enviado al cliente."))
+            order.message_post(body=_("Correu de cancel·lació enviat al client."))
 
         return res
 
