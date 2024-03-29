@@ -26,4 +26,9 @@ class MotiuCancelar(models.Model):
     def confirm_motiu(self):
         for rec in self:
             rec.reclamacio_id.motiu_id = rec.motiu_closing_reason.id
-            rec.reclamacio_id.motiu_name = rec.motiu_closing_reason.name        
+            rec.reclamacio_id.motiu_name = rec.motiu_closing_reason.name
+
+
+
+
+                         

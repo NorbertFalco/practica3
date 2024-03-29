@@ -17,7 +17,7 @@
                         </group>
                     </sheet>
                     <footer>
-                        <button string="Tancar" name="confirm_motiu" type="object" class="oe_highlight"/>                        
+                        <button string="Tancar" name="confirm_motiu" type="object" class="oe_highlight"/>          
                     </footer>
                 </form>
             </field>
