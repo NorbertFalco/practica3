@@ -28,23 +28,6 @@
                 </xpath>
             </field>
         </record>
-
-        <record id="email_template_order_cancellation" model="mail.template">
-            <field name="name">Cancelación de Orden de Venta</field>
-            <field name="email_from">${(object.user_id.email or object.company_id.email)|safe}</field>
-            <field name="subject">Cancelación de Orden #{object.name}</field>
-            <field name="model_id" ref="sale.model_sale_order"/>
-            <field name="auto_delete" eval="True"/>
-            <field name="lang">${object.partner_id.lang}</field>
-            <field name="body_html">
-                <![CDATA[
-                <p>Hola ${object.partner_id.name},</p>
-                <p>Lamentem informar-vos que el vostre ordre de venda <strong>${object.name}</strong> ha estat cancel·lada.</p>
-                <p>Aquí pots incloure més detalls o passos a seguir després de la cancel·lació.</p>
-                <p>Si teniu alguna pregunta o necessiteu assistència, no dubteu a contactar-nos a <a href="mailto:${(object.user_id.email or object.company_id.email)|safe}">${(object.user_id.email or object.company_id.email)|safe}</a>.</p>
-                <p>Gràcies per la vostra comprensió.</p>
-                ]]>
-            </field>
-        </record>
+        
     </data>
 </odoo>
