@@ -16,5 +16,17 @@
                 </xpath>
             </field>
         </record>
+        <record id="view_order_form_inherit_confirm_invoice" model="ir.ui.view">
+            <field name="name">sale.order.form.inherit.confirm_invoice</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <!-- Agregar un botón para confirmar la factura -->
+                <xpath expr="//button[@name='action_confirm']" position="after">
+                    <button name="action_confirm_invoice" string="Confirmar Factura" type="object" class="oe_highlight"/>
+                    <field name="invoice_id"/>
+                </xpath>
+            </field>
+        </record>
     </data>
 </odoo>

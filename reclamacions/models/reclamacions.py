@@ -8,6 +8,7 @@ class Reclamacions(models.Model):
     _description = 'Reclamacions'
     _inherit = ['mail.thread', 'mail.activity.mixin']
     
+    invoice_id = fields.Many2one('account.move', string='Factura')
 
     # el títol de la reclamació
     title = fields.Char(string='Title', required=True)
@@ -54,6 +55,16 @@ class Reclamacions(models.Model):
     # la descripció de la reclamació
     ticket_description = fields.Text(string='Descripció de la reclamació') 
 
+    invoice_id = fields.Many2one('account.move', string='Factura', compute='_compute_invoice_id', store=True)
+
+    @api.depends('sale_order_id')
+    def _compute_invoice_id(self):
+        for record in self:
+            if record.sale_order_id:
+                # Obtener la factura relacionada con la orden de venta
+                invoice = record.sale_order_id.invoice_ids.filtered(lambda inv: inv.state != 'cancel')
+                record.invoice_id = invoice and invoice[0].id or False
+                
     # el nombre de factures i enviaments associats a la comanda
     invoice_count = fields.Integer(compute='_compute_invoice_count', string='Nombre de Factures')
 
@@ -105,19 +116,26 @@ class Reclamacions(models.Model):
                 'target': 'new',
         }
 
+    
+
     def action_cancel(self):
         self.ensure_one()
         if self.state not in ['closed', 'cancelled']:
             self.state = 'cancelled'
+            sale_order_id = self.sale_order_id
             return {
-                        'type': 'ir.actions.act_window',
-                        'name': 'Motiu',
-                        'res_model': 'motiu',
-                        'view_mode': 'form',
-                        'view_id': self.env.ref("reclamacions.view_motiu_form").id,
-                        'context': {'default_reclamacio_id': self.id},
-                        'target': 'new',
-                    }
+                'type': 'ir.actions.act_window',
+                'name': 'Motiu cancelar',
+                'res_model': 'motiu.cancelar',
+                'view_mode': 'form',
+                'view_id': self.env.ref("reclamacions.view_motiucancelar_form").id,
+                'context': {
+                    'default_reclamacio_id': self.id,
+                    'default_sale_order_id': sale_order_id.id  
+                },
+                'target': 'new',
+            }
+
 
 
     @api.model

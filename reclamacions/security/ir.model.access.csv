@@ -3,6 +3,10 @@ access_reclamacions,access_reclamacions,model_reclamacions,base.group_user,1,1,1
 access_missatges,access_missatges,model_missatges,base.group_user,1,1,1,0
 access_closing_reason,access_closing_reason,model_closing_reason,base.group_user,1,1,1,1
 access_motiu,access_motiu,model_motiu,base.group_user,1,1,1,1
+<<<<<<< HEAD
 access_sale_order,access_sale_order,model_sale_order,base.group_user,1,1,1,1
 
 
+=======
+access_motiu_cancelar,access_motiu_cancelar,model_motiu_cancelar,base.group_user,1,1,1,1
+>>>>>>> ad4bb88 (factura id es mostra al cancelar i confirmem la factura desde la comanda de venda)
