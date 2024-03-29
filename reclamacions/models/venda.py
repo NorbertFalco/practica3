@@ -7,7 +7,6 @@ class venda(models.Model):
     _inherit = 'sale.order'
 
     reclamacions_ids = fields.One2many('reclamacions', 'sale_order_id', string='Reclamaciones')
-
     invoice_id = fields.Many2one('account.move', string='Factura', compute='_compute_invoice_id', store=True)
 
     @api.depends('invoice_ids')
@@ -38,5 +37,3 @@ class venda(models.Model):
                 _logger.info("Factura confirmada para la orden de venta: %s", order.name)
 
         return True
-        
-

@@ -24,10 +24,8 @@
                 <!-- Agregar un botón para confirmar la factura -->
                 <xpath expr="//button[@name='action_confirm']" position="after">
                     <button name="action_confirm_invoice" string="Confirmar Factura" type="object" class="oe_highlight"/>
-                    <field name="invoice_id"/>
                 </xpath>
             </field>
         </record>
-        
     </data>
 </odoo>
