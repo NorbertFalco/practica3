@@ -66,11 +66,11 @@ class Reclamacions(models.Model):
                 record.invoice_id = invoice and invoice[0].id or False
                 
     # el nombre de factures i enviaments associats a la comanda
-    invoice_count = fields.Integer(compute='_compute_invoice_count', string='Nombre de Factures')
+    invoice_count = fields.Integer(compute='_compute_invoice_count')
 
     # el nombre d'enviaments associats a la comanda
-    delivery_count = fields.Integer(compute='_compute_delivery_count', string='Nombre d\'Enviaments')
-    picking_count = fields.Integer(compute='_compute_picking_count', string='Nombre d\'Enviaments')
+    delivery_count = fields.Integer(compute='_compute_delivery_count')
+    picking_count = fields.Integer(compute='_compute_picking_count')
 
 
     # l'estat de la reclamació
@@ -183,16 +183,54 @@ class Reclamacions(models.Model):
         for record in self:
             record.picking_count = len(record.sale_order_id.picking_ids)
 
-    @api.onchange('missatges_ids')
-    def _onchange_missatges_ids(self):
-        if any(missatge.reclamacio_id.state == 'new' for missatge in self.missatges_ids):
-            self.state = 'in_progress'
+    @api.depends('sale_order_id')
+    def _compute_delivery_count(self):
+        for record in self:
+            record.delivery_count = len(record.sale_order_id.picking_ids)
+
+    @api.model
+    def create(self, vals):
+        reclamacion = super(Reclamacions, self).create(vals)
+        if reclamacion.missatges_ids and reclamacion.state == 'new':
+            reclamacion.state = 'in_progress'
+        return reclamacion
 
     def write(self, vals):
-            if vals:
-                vals['edit_date'] = fields.Date.today()
-            return super(Reclamacions, self).write(vals)
+        if vals.get('missatges_ids') and self.state == 'new':
+            vals['state'] = 'in_progress'
+        return super(Reclamacions, self).write(vals)
 
 
 
 
+    def action_view_invoice(self):
+        self.ensure_one()
+        if self.sale_order_id:
+            invoices = self.sale_order_id.invoice_ids
+            action = self.env.ref('account.action_move_out_invoice_type').read()[0]
+            if len(invoices) > 1:
+                action['domain'] = [('id', 'in', invoices.ids)]
+            elif len(invoices) == 1:
+                action['views'] = [(self.env.ref('account.view_move_form').id, 'form')]
+                action['res_id'] = invoices.ids[0]
+            else:
+                action = {'type': 'ir.actions.act_window_close'}
+            return action
+        else:
+            return False
+
+    def action_view_delivery(self):
+        self.ensure_one()
+        if self.sale_order_id:
+            deliveries = self.sale_order_id.picking_ids.filtered(lambda p: p.picking_type_id.code == 'outgoing')
+            action = self.env.ref('stock.action_picking_tree_all').read()[0]
+            if len(deliveries) > 1:
+                action['domain'] = [('id', 'in', deliveries.ids)]
+            elif len(deliveries) == 1:
+                action['views'] = [(self.env.ref('stock.view_picking_form').id, 'form')]
+                action['res_id'] = deliveries.ids[0]
+            else:
+                action = {'type': 'ir.actions.act_window_close'}
+            return action
+        else:
+            return False
