@@ -37,3 +37,32 @@ class venda(models.Model):
                 _logger.info("Factura confirmada para la orden de venta: %s", order.name)
 
         return True
+
+            # Aquí se incluye tu método action_cancel personalizado
+    def action_cancel(self):
+        # Comprobar si hay facturas publicadas asociadas a la orden
+        published_invoices = self.invoice_ids.filtered(lambda inv: inv.state == 'posted')
+        if published_invoices:
+            raise UserError(_('No es pot cancel·lar lordre perquè hi ha factures publicades associades.'))
+
+        # Asegurarse de ejecutar la lógica original de cancelación
+        res = super(venda, self).action_cancel()
+
+        # Cancelar facturas asociadas no publicadas
+        invoices_to_cancel = self.invoice_ids.filtered(lambda inv: inv.state != 'posted')
+        for invoice in invoices_to_cancel:
+            invoice.action_invoice_draft()
+            invoice.button_cancel()
+
+        # Cancelar envíos asociados no realizados
+        pickings_to_cancel = self.picking_ids.filtered(lambda pick: pick.state not in ['done', 'cancel'])
+        pickings_to_cancel.action_cancel()
+
+        # Enviar correo al cliente sobre la cancelación
+        template = self.env.ref('reclamacions.email_template_order_cancellation')
+
+        for order in self:
+            template.send_mail(order.id, force_send=True)
+            order.message_post(body=("Correu de cancel·lació enviat al client."))
+
+        return res
