@@ -15,39 +15,85 @@
             <field name="model">reclamacions</field>
             <field name="arch" type="xml">
                 <form string="Reclamació">
+                <div class="oe_title">
                     <header>
                         <button string="Tancar" type="object" name="action_close" attrs="{'invisible': [('state', 'in', ['closed', 'cancelled'])]}" class="oe_highlight"/>
                         <button string="Cancelar" type="object" name="action_cancel" attrs="{'invisible': [('state', 'in', ['closed', 'cancelled'])]}" class="oe_highlight"/>
                         <button string="Reobrir" type="object" name="action_reopen" attrs="{'invisible': [('state', '!=', 'closed')]}" class="oe_highlight"/>
                         <button string="Tancar comanda de venta" type="object" name="action_cancel_sale_order" attrs="{'invisible': [('state', 'in', ['closed', 'cancelled'])]}" class="oe_highlight"/>
-                        
                         <field name="state" widget="statusbar" statusbar_visible="new,in_progress,closed,cancelled"/>
                     </header>
-                    <sheet>
-                        <group>
-                            <field name="title" string="Títol"/>
-                            <field name="state" string="Estat" readonly="1"/>
-                            <field name="creation_date" string="Data de creació" readonly="1"/>
-                            <field name="edit_date" string="Data de modificació" readonly="1"/>
-                            <field name="closing_date" string="Data de tancament" readonly="1"/>
-                            <field name="user_id" string="Usuari"/>
-                            <field name="sale_order_id" string="Comanda de venda"/>
-                            <field name="motiu_name" string="Motiu de tancament"/>
-                        </group>
-                        <notebook>
-                            <page string="Missatges">
-                                <field name="missatges_ids" context="{'default_reclamacio_id': active_id}">
-                                    <tree editable="bottom">
-                                        <field name="author_id" string="Autor"/>
-                                        <field name="date" string="Data"/>
-                                        <field name="text" string="Text"/>
-                                    </tree>
-                                </field>
-                            </page>
-                        </notebook>
-                    </sheet>
+                </div>
+                        <div class="separation_div">
+                            <!-- Botons d'enviaments i factures  -->
+                            <div class="o-form-buttonbox oe_button_box position-relative text-end o_full">
+                                <!-- Botó enviaments -->
+                                <button name="action_view_delivery"
+                                        type="object"
+                                        class="btn oe_stat_button btn-light flex-shrink-0 mb-0 py-0 border-0 border-start border-bottom rounded-0 text-start text-nowrap text-capitalize"
+                                        data-tooltip-template="views.ViewButtonTooltip"
+                                        data-tooltip-info="{&quot;debug&quot;:true,&quot;button&quot;:{&quot;modifiers&quot;:&quot;{\&quot;invisible\&quot;: [[\&quot;delivery_count\&quot;, \&quot;=\&quot;, 0]]}&quot;,&quot;type&quot;:&quot;object&quot;,&quot;name&quot;:&quot;action_view_delivery&quot;},&quot;context&quot;:{&quot;search_default_my_quotation&quot;:1,&quot;lang&quot;:&quot;en_US&quot;,&quot;tz&quot;:&quot;Europe/Madrid&quot;,&quot;uid&quot;:2,&quot;allowed_company_ids&quot;:[1]},&quot;model&quot;:&quot;sale.order&quot;}"
+                                        title="">
+                                    <i class="fa fa-fw o_button_icon fa-truck"></i>
+                                    <div name="delivery_count" class="o_field_widget o_readonly_modifier o_field_statinfo">
+                                        <span class="o_stat_info o_stat_value">1</span>
+                                        <span class="o_stat_text">Enviament</span>
+                                    </div>
+                                </button>
+
+                                <!-- Botó factures -->
+                                <button name="action_view_invoice"
+                                        type="object"
+                                        class="btn oe_stat_button btn-light flex-shrink-0 mb-0 py-0 border-0 border-start border-bottom rounded-0 text-start text-nowrap text-capitalize"
+                                        data-tooltip-template="views.ViewButtonTooltip"
+                                        data-tooltip-info="{&quot;debug&quot;:true,&quot;button&quot;:{&quot;modifiers&quot;:&quot;{\&quot;invisible\&quot;: [[\&quot;invoice_count\&quot;, \&quot;=\&quot;, 0]]}&quot;,&quot;type&quot;:&quot;object&quot;,&quot;name&quot;:&quot;action_view_invoice&quot;},&quot;context&quot;:{&quot;search_default_my_quotation&quot;:1,&quot;lang&quot;:&quot;en_US&quot;,&quot;tz&quot;:&quot;Europe/Madrid&quot;,&quot;uid&quot;:2,&quot;allowed_company_ids&quot;:[1]},&quot;model&quot;:&quot;sale.order&quot;}"
+                                        title="">
+                                    <i class="fa fa-fw o_button_icon fa-pencil-square-o"></i>
+                                    <div name="invoice_count" class="o_field_widget o_readonly_modifier o_field_statinfo">
+                                        <span class="o_stat_info o_stat_value">1</span>
+                                        <span class="o_stat_text">Factura</span>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                        <sheet>
+                            <group>
+                                <field name="title" string="Títol"/>
+                                <field name="state" string="Estat" readonly="1"/>
+                                <field name="creation_date" string="Data de creació" readonly="1"/>
+                                <field name="edit_date" string="Data de modificació" readonly="1"/>
+                                <field name="closing_date" string="Data de tancament" readonly="1"/>
+                                <field name="user_id" string="Usuari"/>
+                                <field name="sale_order_id" string="Comanda de venda"/>
+                                <field name="customer_name" string="Client"/>
+                                <field name="motiu_name" string="Motiu de tancament"/>
+                            </group>
+                            <notebook>
+                                <page string="Missatges">
+                                    <field name="missatges_ids" context="{'default_reclamacio_id': active_id}">
+                                        <tree editable="bottom">
+                                            <field name="author_id" string="Autor"/>
+                                            <field name="date" string="Data"/>
+                                            <field name="text" string="Text"/>
+                                        </tree>
+                                        <form>
+                                            <group>
+                                                <field name="text" required="1"/>
+                                                <field name="author_id"/>
+                                            </group>
+                                            <footer>
+                                                <button name="action_send_message" string="Enviar" type="object" class="btn-primary"/>
+                                                <button string="Cancelar" class="btn-secondary" special="cancel"/>
+                                            </footer>
+                                        </form>
+                                    </field>
+                                </page>
+                            </notebook>
+                        </sheet>
                 </form>
             </field>
         </record>
     </data>
 </odoo>
+
+
