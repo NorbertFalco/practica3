@@ -1,9 +1,11 @@
-from odoo import fields, models ,api
+from odoo import fields, models, api
 from odoo.exceptions import ValidationError, UserError
 import logging
+
 _logger = logging.getLogger('reclamacions')
 
-class venda(models.Model):
+
+class Venda(models.Model):
     _inherit = 'sale.order'
 
     reclamacions_ids = fields.One2many('reclamacions', 'sale_order_id', string='Reclamaciones')
@@ -19,7 +21,6 @@ class venda(models.Model):
                 order.invoice_id = False
                 
     def action_confirm_invoice(self):
-        
         for order in self:
             if not order.invoice_ids:
                 raise UserError("No hay ninguna factura para confirmar en esta orden.")
@@ -38,31 +39,15 @@ class venda(models.Model):
 
         return True
 
-            # Aquí se incluye tu método action_cancel personalizado
     def action_cancel(self):
-        # Comprobar si hay facturas publicadas asociadas a la orden
-        published_invoices = self.invoice_ids.filtered(lambda inv: inv.state == 'posted')
-        if published_invoices:
-            raise UserError(_('No es pot cancel·lar lordre perquè hi ha factures publicades associades.'))
-
-        # Asegurarse de ejecutar la lógica original de cancelación
-        res = super(venda, self).action_cancel()
-
-        # Cancelar facturas asociadas no publicadas
-        invoices_to_cancel = self.invoice_ids.filtered(lambda inv: inv.state != 'posted')
-        for invoice in invoices_to_cancel:
-            invoice.action_invoice_draft()
-            invoice.button_cancel()
-
-        # Cancelar envíos asociados no realizados
-        pickings_to_cancel = self.picking_ids.filtered(lambda pick: pick.state not in ['done', 'cancel'])
-        pickings_to_cancel.action_cancel()
-
-        # Enviar correo al cliente sobre la cancelación
-        template = self.env.ref('reclamacions.email_template_order_cancellation')
-
-        for order in self:
-            template.send_mail(order.id, force_send=True)
-            order.message_post(body=("Correu de cancel·lació enviat al client."))
-
+        res = super(Venda, self).action_cancel()
+        self.send_cancellation_email()
         return res
+
+    def send_cancellation_email(self):
+        template = self.env.ref('reclamacions.email_template_order_cancellation', raise_if_not_found=False)
+        if template:
+            template.send_mail(self.id, force_send=True)
+        else:
+            _logger.error("No se encontró la plantilla de correo electrónico para la cancelación de la orden de venta.")    
+

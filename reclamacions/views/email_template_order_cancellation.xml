@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <!-- Plantilla de Correo Electrónico para Cancelación de Orden de Venta -->
+        <!-- Plantilla de Correu Electrònic per a la Cancel·lació de la Comanda de Venda -->
         <record id="email_template_order_cancellation" model="mail.template">
-            <field name="name">Cancelación de Orden de Venta</field>
-            <field name="email_from">${(object.user_id.email or object.company_id.email)|safe}</field>
-            <field name="subject">Cancelación de Orden #{object.name}</field>
+            <field name="name">Cancel·lació de Comanda de Venda</field>
+            <field name="email_from">tu_correo@tuempresa.com</field> <!-- Reemplaza 'tu_correo@tuempresa.com' con tu dirección de correo electrónico -->
+            <field name="subject">La vostra comanda de venda a YourCompany s'ha cancel·lat (Ref ${object.name})</field>
             <field name="model_id" ref="sale.model_sale_order"/>
             <field name="auto_delete" eval="True"/>
             <field name="lang">${object.partner_id.lang}</field>
             <field name="body_html">
                 <![CDATA[
-                <p>Hola ${object.partner_id.name},</p>
-                <p>Lamentem informar-vos que el vostre ordre de venda <strong>${object.name}</strong> ha estat cancel·lada.</p>
-                <p>Aquí pots incloure més detalls o passos a seguir després de la cancel·lació.</p>
-                <p>Si teniu alguna pregunta o necessiteu assistència, no dubteu a contactar-nos a <a href="mailto:${(object.user_id.email or object.company_id.email)|safe}">${(object.user_id.email or object.company_id.email)|safe}</a>.</p>
-                <p>Gràcies per la vostra comprensió.</p>
+                <p>Benvolgut/da ${object.partner_id.name},</p>
+                <p>Us informem que la vostra comanda de venda ${object.name} ha estat cancel·lada. Si cal cap reemborsament, es realitzarà en el moment més oportú.</p>
+                <p>No dubteu en contactar-nos si teniu alguna pregunta.</p>
                 ]]>
             </field>
         </record>
