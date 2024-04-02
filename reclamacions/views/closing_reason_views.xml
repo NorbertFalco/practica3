@@ -30,7 +30,7 @@
                 <form>
                     <sheet>
                         <group>
-                            <field name="name" readonly="1"/>
+                            <field name="name" readonly="0"/>
                             <field name="description"/>
                         </group>
                     </sheet>

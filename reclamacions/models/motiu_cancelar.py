@@ -7,7 +7,7 @@ class MotiuCancelar(models.Model):
 
     reclamacio_id = fields.Many2one('reclamacions', string='Reclamación', required=True)
     motiu_closing_reason = fields.Many2one('closing.reason', string='Motiu', required=True)
-    motiu_name = fields.Char(related='motiu_closing_reason.name', string='Motiu de Tancament', readonly=True)
+    motiu_name = fields.Char(related='motiu_closing_reason.name', string='Motiu de Tancament')
     sale_order_id = fields.Many2one('sale.order', string='Comanda de venta')
     
     invoice_id = fields.Many2one('account.move', string='Factura', compute='_compute_invoice_id', store=True)

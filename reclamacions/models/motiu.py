@@ -9,7 +9,7 @@ class Motiu(models.Model):
 
     reclamacio_id = fields.Many2one('reclamacions', string='Reclamació', required=True)
     motiu_closing_reason = fields.Many2one('closing.reason', string='Motiu', required=True)
-    motiu_name = fields.Char(related='motiu_closing_reason.name', string='Motiu de Tancament', readonly=True)
+    motiu_name = fields.Char(related='motiu_closing_reason.name', string='Motiu de Tancament')
 
     def confirm_motiu(self):
         for rec in self:
