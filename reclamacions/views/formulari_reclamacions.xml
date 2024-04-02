@@ -37,7 +37,6 @@
                                     title="">
                                 <i class="fa fa-fw o_button_icon fa-truck"></i>
                                 <div name="delivery_count" class="o_field_widget o_readonly_modifier o_field_statinfo">
-                                    <span class="o_stat_info o_stat_value">1</span>
                                     <span class="o_stat_text">Enviament</span>
                                 </div>
                             </button>
@@ -51,7 +50,6 @@
                                     title="">
                                 <i class="fa fa-fw o_button_icon fa-pencil-square-o"></i>
                                 <div name="invoice_count" class="o_field_widget o_readonly_modifier o_field_statinfo">
-                                    <span class="o_stat_info o_stat_value">1</span>
                                     <span class="o_stat_text">Factura</span>
                                 </div>
                             </button>
