@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_practica4,access_practica4,model_sale_order,base.group_user,1,1,1,1
+access_custom_sales_report,access_custom_sales_report,model_custom_sales_report,base.group_user,1,1,1,1

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="view_order_form_inherited_total_articles" model="ir.ui.view">
+            <field name="name">sale.order.form.inherited.total_articles</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook" position="inside">
+                    <page string="Total articles">
+                        <field name="total_articles"/>
+                    </page>
+                </xpath>
+            </field>
+        </record>        
+
+        <record id="view_order_form_inherited_preferred_email" model="ir.ui.view">
+            <field name="name">sale.order.form.inherited.preferred_email</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook" position="inside">
+                    <page string="Email preferit">
+                        <field name="preferred_email" widget="char" placeholder="Enter preferred email"/>
+                    </page>
+                </xpath>
+            </field>
+        </record>        
+    </data>
+</odoo>

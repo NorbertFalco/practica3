@@ -1,0 +1,52 @@
+<odoo>
+    <data>
+        <!-- Custom Sales Report Tree View -->
+        <record id="view_custom_sales_report_tree" model="ir.ui.view">
+            <field name="name">custom.sales.report.tree</field>
+            <field name="model">custom.sales.report</field>
+            <field name="arch" type="xml">
+                <tree string="Custom Sales Report">
+                    <field name="salesperson"/>
+                    <field name="status"/>
+                    <field name="order_count"/>
+                    <field name="total_cost"/>
+
+                    <!-- Add a header with a button to print the report -->
+                    <header>
+                        <button name="action_custom_sales_report_print"
+                                type="object"
+                                string="Print Report"
+                                class="oe_highlight"
+                                icon="fa-print"
+                                attrs="{'invisible': [('order_count', '=', 0)]}"/>
+                    </header>
+
+                </tree>
+            </field>
+        </record>
+
+        <!-- Define the action for the Custom Sales Report -->
+        <record id="action_custom_sales_report" model="ir.actions.act_window">
+            <field name="name">Custom Sales Report</field>
+            <field name="res_model">custom.sales.report</field>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_custom_sales_report_tree"/>
+        </record>
+
+        <!-- Define the action to print the report -->
+        <record id="action_custom_sales_report_print" model="ir.actions.report">
+            <field name="name">Print Custom Sales Report</field>
+            <field name="model">custom.sales.report</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">practica4.custom_sales_report_template</field>
+        </record>
+
+        <!-- Menu item to access the Custom Sales Report -->
+        <menuitem id="menu_custom_sales_report"
+                  name="Custom Sales Report"
+                  parent="sale.sale_menu_root"
+                  action="action_custom_sales_report"
+                  sequence="60"/>
+
+    </data>
+</odoo>
