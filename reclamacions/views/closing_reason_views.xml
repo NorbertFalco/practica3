@@ -7,7 +7,6 @@
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">closing.reason</field>
             <field name="view_mode">tree,form</field>
-            <field name="domain">[]</field>
         </record>
 
         <!-- Tree View per a Motius de Tancament -->

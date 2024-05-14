@@ -7,7 +7,6 @@
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">reclamacions</field>
             <field name="view_mode">tree,form</field>
-            <field name="domain">[]</field>
         </record>
 
         <!-- Llista(tree view) per a reclamacions -->
